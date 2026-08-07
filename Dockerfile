@@ -1,23 +1,46 @@
 FROM php:8.2-apache
 
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    git unzip zip libzip-dev nodejs npm \
+    git \
+    unzip \
+    zip \
+    curl \
+    libzip-dev \
+    nodejs \
+    npm \
     && docker-php-ext-install pdo pdo_mysql zip
 
+# Install Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Enable Apache rewrite
 RUN a2enmod rewrite
 
 WORKDIR /var/www/html
 
+# Copy project files
 COPY . .
 
+# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
+# Install frontend dependencies
 RUN npm install
+
+# Build Vite assets
 RUN npm run build
 
-RUN chown -R www-data:www-data storage bootstrap/cache
+# Set Apache document root
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
-COPY .docker/vhost.conf /etc/apache2/sites-available/000-default.conf
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
+/etc/apache2/sites-available/*.conf \
+/etc/apache2/apache2.conf \
+/etc/apache2/conf-available/*.conf
+
+# Laravel permissions
+RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 80
 
