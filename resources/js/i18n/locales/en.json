@@ -1,0 +1,23 @@
+{
+ 
+    "navbar": {
+        "home": "Home",
+        "about": "About",
+        "contact": "Contact",
+        "reserve": "Reserve"
+    },
+
+  
+    "hero": {
+        "badge": "Luxury Boutique Bakery",
+        "titleLine1": "Crafted",
+        "titleLine2": "with Love,",
+        "titleLine3": "Baked to",
+        "titleHighlight": "Perfection",
+        "description": "Velvet Crumbs creates handcrafted cakes designed for unforgettable celebrations. Every creation combines premium ingredients, timeless elegance, and artisan craftsmanship.",
+        "explore": "Explore Collection",
+        "story": "Our Story"
+    }
+
+
+}
