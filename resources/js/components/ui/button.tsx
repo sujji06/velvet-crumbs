@@ -22,4 +22,8 @@ export default function Button({
             {children}
         </button>
     );
+
+    
 }
+
+export {Button} ;
